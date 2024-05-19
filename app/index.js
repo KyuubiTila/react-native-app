@@ -1,12 +1,32 @@
+import { useEffect } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Redirect, router } from "expo-router";
+import { router } from "expo-router";
 
 import { images } from "../constants";
 import CustomButton from "../components/CustomButton";
 import { StatusBar } from "expo-status-bar";
 
+import { useAuth } from "./stores/auth";
+
 export default function App() {
+  const { loggedIn, userDetailsRefetch } = useAuth();
+  console.log(loggedIn);
+
+  useEffect(() => {
+    userDetailsRefetch();
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      router.replace("/home");
+    }
+  }, [loggedIn]);
+
+  if (loggedIn) {
+    return null; // or a loading spinner
+  }
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -24,16 +44,16 @@ export default function App() {
 
           <View className="relative mt-5">
             <Text className="text-3xl text-white font-bold text-center">
-              Discover Endless Possiblility with{" "}
+              Discover Endless Possibility with{" "}
               <Text className="text-secondary-200">Aora</Text>
             </Text>
             <Image
               source={images.path}
-              className=" w-[136px] h-[15px] absolute -bottom-2 -right-8"
+              className="w-[136px] h-[15px] absolute -bottom-2 -right-8"
               resizeMode="contain"
             />
           </View>
-          <Text className="text-sm fonst-pregular text-gray-100 mt-7 text-center ">
+          <Text className="text-sm fonst-pregular text-gray-100 mt-7 text-center">
             Where creativity meets innovation: embark on a journey of limitless
             exploration with Aora
           </Text>

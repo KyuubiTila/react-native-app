@@ -5,11 +5,12 @@ import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 
 import { images } from "../../constants";
 import { CustomButton, FormField } from "../../components";
-// import { getCurrentUser, signIn } from "../../lib/appwrite";
-// import { useGlobalContext } from "../../context/GlobalProvider";
+
+import { useAuth } from "../stores/auth";
 
 const SignIn = () => {
-  // const { setUser, setIsLogged } = useGlobalContext();
+  const { user, login } = useAuth();
+
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -23,13 +24,9 @@ const SignIn = () => {
     setSubmitting(true);
 
     try {
-      await signIn(form.email, form.password);
-      const result = await getCurrentUser();
-      setUser(result);
-      setIsLogged(true);
+      await login(form);
 
-      Alert.alert("Success", "User signed in successfully");
-      router.replace("/home");
+      Alert.alert("Success", "User  signed in successfully");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {

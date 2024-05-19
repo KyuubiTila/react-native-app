@@ -72,9 +72,9 @@ export class AuthService {
     loginCredentialDto: LoginCredentialDto,
   ): Promise<{ accessToken: string }> {
     try {
-      const { username, password } = loginCredentialDto;
+      const { email, password } = loginCredentialDto;
       const user = await this.userRepository.findOne({
-        where: { username },
+        where: { email },
         select: ['username', 'id', 'password'],
       });
 
